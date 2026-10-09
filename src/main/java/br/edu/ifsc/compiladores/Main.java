@@ -2,6 +2,7 @@ package br.edu.ifsc.compiladores;
 
 import br.edu.ifsc.compiladores.lexico.AnalisadorLexico;
 import br.edu.ifsc.compiladores.lexico.Token;
+import br.edu.ifsc.compiladores.sintatico.AnalisadorSintatico;
 
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class Main {
                 System.out.println(t);
             }
 
-            // TODO: analise sintática
+            System.out.println("\n=== INICIANDO ANALISE SINTATICA ===");
+            AnalisadorSintatico sintatico = new AnalisadorSintatico(tokens);
+            sintatico.analisar();
+
 
         } catch (Exception e) {
             System.err.println("\n[X] Erro durante a compilacao:");
