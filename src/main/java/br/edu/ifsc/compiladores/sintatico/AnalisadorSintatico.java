@@ -53,8 +53,6 @@ public class AnalisadorSintatico {
         if (tokenAtual().getTipo() != TipoToken.EOF) {
             throw new RuntimeException("Erro Sintático: Tokens adicionais encontrados após o fim do programa principal na linha " + tokenAtual().getLinha());
         }
-
-        System.out.println("Analise Sintatica encerrada com exito");
     }
 
     // Regra: PROGRAMA → LISTAFUNÇÕES PRINCIPAL
