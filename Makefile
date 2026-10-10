@@ -4,7 +4,7 @@ MAIN = br.edu.ifsc.compiladores.Main
 INPUT_PATH ?= teste.txt
 FLAGS ?=
 
-.PHONY: package run test
+.PHONY: build clean run test
 
 # Compiles the project and generates the .jar
 build:
