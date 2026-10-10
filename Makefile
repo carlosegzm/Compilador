@@ -19,7 +19,7 @@ clean:
 run:
 	java -cp $(JAR) $(MAIN) $(FLAGS) $(INPUT_PATH)
 
-test: package
+test: build
 	java -cp $(JAR) $(MAIN) test_batch/
 
 # Exemplos de uso:
