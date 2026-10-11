@@ -1,0 +1,12 @@
+int soma(int a, int b) {
+    return a + b;
+}
+
+main() { 
+    float x;
+    int y;
+    x = 10..0;
+    y = func soma(x, 5);
+    // b = teste
+    println("Resultado: ", y);
+}

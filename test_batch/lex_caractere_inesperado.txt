@@ -1,0 +1,11 @@
+int soma(int a, int b) {
+    return a + b;
+}
+
+main() { 
+    // `````` 
+    ººººº
+    int x, y;
+    y = func soma(x, 5);
+    println("Resultado: ", y);
+}
