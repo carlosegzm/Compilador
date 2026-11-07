@@ -82,12 +82,14 @@ public class AnalisadorLexico {
             if (c == '"') {
                 StringBuilder lexema = new StringBuilder();
                 lexema.append(c);
-                while (!isEOF() && verProximoCaractere() != '"') {
+                // o texto precisa ser fechado na mesma linha
+                while (!isEOF() && verProximoCaractere() != '"' && verProximoCaractere() != '\n') {
                     lexema.append(lerCaractere());
                 }
-                if (!isEOF()) {
-                    lexema.append(lerCaractere()); //consome " de fechamento
+                if (isEOF() || verProximoCaractere() == '\n') {
+                    throw new RuntimeException("Erro léxico: Texto não fechado na linha " + linhaInicial + ", coluna " + colunaInicial);
                 }
+                lexema.append(lerCaractere()); //consome " de fechamento
                 tokens.add(new Token(TipoToken.TEXTO, lexema.toString(), linhaInicial, colunaInicial));
                 continue;
             }
@@ -107,6 +109,15 @@ public class AnalisadorLexico {
                         ehDecimal = true;
                     }
                     lexema.append(proximo);
+                }
+
+                // depois do ponto precisa vir pelo menos um dígito (ex: 10. é inválido)
+                if (lexema.charAt(lexema.length() - 1) == '.') {
+                    throw new RuntimeException("Erro léxico: Número decimal incompleto na linha " + linhaInicial);
+                }
+                // número não pode vir colado em letra (ex: 12abc)
+                if (ehLetra(verProximoCaractere()) || verProximoCaractere() == '_') {
+                    throw new RuntimeException("Erro léxico: Identificador não pode começar com número na linha " + linhaInicial);
                 }
 
                 TipoToken tipo = ehDecimal ? TipoToken.NUM_DEC : TipoToken.NUM_INT;
