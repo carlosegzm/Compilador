@@ -1,0 +1,14 @@
+int maior(int a, int b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+main() {
+    int x, y;
+    x = 10;
+    y = func maior(x, 5);
+    println("Maior: ", y);
+}

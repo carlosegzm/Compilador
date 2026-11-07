@@ -1,0 +1,12 @@
+main() {
+    int i, total;
+    boolean achou;
+    i = 0;
+    total = 0;
+    achou = i > 5;
+    while (i < 10 && !achou || total == 100) {
+        total = total + i * 2;
+        i = i + 1;
+    }
+    println("Total: ", total);
+}
