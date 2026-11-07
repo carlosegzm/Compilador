@@ -2,6 +2,7 @@ package br.edu.ifsc.compiladores;
 
 import br.edu.ifsc.compiladores.lexico.AnalisadorLexico;
 import br.edu.ifsc.compiladores.lexico.Token;
+import br.edu.ifsc.compiladores.semantico.AnalisadorSemantico;
 import br.edu.ifsc.compiladores.sintatico.AnalisadorSintatico;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Main {
-enum Resultado { OK, ERRO_LEXICO, ERRO_SINTATICO }
+enum Resultado { OK, ERRO_LEXICO, ERRO_SINTATICO, ERRO_SEMANTICO }
 
     // cores ANSI 
     static final String VERDE = "\u001B[32m", 
@@ -79,11 +80,23 @@ enum Resultado { OK, ERRO_LEXICO, ERRO_SINTATICO }
             tokens.forEach(System.out::println);
         }
 
+        // análise sintática, semântica e geração de código acontecem na mesma passada
+        AnalisadorSintatico sintatico = new AnalisadorSintatico(tokens);
         try {
-            new AnalisadorSintatico(tokens).analisar();
+            sintatico.analisar();
+        } catch (AnalisadorSemantico.Erro e) {
+            detalhe.append("semantico: ").append(e.getMessage());
+            return Resultado.ERRO_SEMANTICO;
         } catch (Exception e) {
             detalhe.append("sintatico: ").append(e.getMessage());
             return Resultado.ERRO_SINTATICO;
+        }
+
+        if (verbose) {
+            System.out.println("--- tabela de símbolos de " + arq.getFileName() + " ---");
+            System.out.print(sintatico.getSemantico());
+            System.out.println("--- código de três endereços de " + arq.getFileName() + " ---");
+            System.out.print(sintatico.getCodigo());
         }
 
         return Resultado.OK;
@@ -94,6 +107,7 @@ enum Resultado { OK, ERRO_LEXICO, ERRO_SINTATICO }
         if (nome.startsWith("ok_"))   return Resultado.OK;
         if (nome.startsWith("lex_"))  return Resultado.ERRO_LEXICO;
         if (nome.startsWith("sint_")) return Resultado.ERRO_SINTATICO;
+        if (nome.startsWith("sem_"))  return Resultado.ERRO_SEMANTICO;
         return null;
     }
 
