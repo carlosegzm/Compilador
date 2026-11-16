@@ -1,0 +1,8 @@
+int metade(int a) {
+    return a / 2.0;
+}
+
+main() {
+    int x;
+    x = func metade(10);
+}
